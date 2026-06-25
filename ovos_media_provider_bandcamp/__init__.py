@@ -13,8 +13,7 @@ from typing import ClassVar, List, Optional, Set
 
 from ovos_utils.log import LOG
 
-from mediavocab import MediaType, Release, Signals, Entity
-from mediavocab.taxonomy import PlaybackType
+from mediavocab import Release, Signals, Entity
 
 from ovos_plugin_manager.templates.media_provider import MediaProvider
 
@@ -22,27 +21,19 @@ from py_bandcamp import BandCamp
 
 
 class BandcampMediaProvider(MediaProvider):
-    """Search Bandcamp's public catalog and return playable music releases.
-
-    Routing is fixed to music audio: the OCP pipeline gates this provider out
-    of non-music queries before paying for a network search.
-    """
+    """Search Bandcamp's public catalog and return playable music releases."""
 
     name: ClassVar[str] = "bandcamp"
-    media: ClassVar[Set[MediaType]] = {MediaType.MUSIC}
-    playback_type: ClassVar[Set[PlaybackType]] = {PlaybackType.AUDIO}
 
     def __init__(self, config: Optional[dict] = None):
         super().__init__(config)
         self.max_pages = self.config.get("max_pages", 1)
 
-    def is_available(self) -> bool:
-        """py_bandcamp is a hard dependency and Bandcamp's search endpoint
-        needs no API key, so the provider is available whenever its imports
-        resolved."""
-        return True
-
-    def search(self, signals: Signals, lang: str = "en-us") -> List[Release]:
+    def search(self, signals: Signals, lang: str = "en-us", *,
+               supported_playback_types: Optional[Set[str]] = None,
+               blocked_genres: Optional[Set[str]] = None,
+               region: Optional[str] = None,
+               session_id: Optional[str] = None) -> List[Release]:
         """Search Bandcamp for ``signals.title`` (optionally scoped by
         ``signals.artist``) and return candidate music :class:`Release` objects.
 
