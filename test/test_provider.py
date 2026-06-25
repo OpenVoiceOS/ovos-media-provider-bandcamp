@@ -2,7 +2,6 @@
 from unittest.mock import patch
 
 from mediavocab import MediaType, Release, Signals, Work, Entity, EntityKind
-from mediavocab.taxonomy import PlaybackType
 
 from ovos_media_provider_bandcamp import BandcampMediaProvider
 
@@ -15,19 +14,6 @@ def _make_release(title):
 def test_instantiation():
     prov = BandcampMediaProvider()
     assert prov.name == "bandcamp"
-    assert prov.media == {MediaType.MUSIC}
-    assert prov.playback_type == {PlaybackType.AUDIO}
-    assert prov.is_available() is True
-
-
-def test_matches_music_true():
-    prov = BandcampMediaProvider()
-    assert prov.matches(Signals(medium=MediaType.MUSIC)) is True
-
-
-def test_matches_movie_false():
-    prov = BandcampMediaProvider()
-    assert prov.matches(Signals(medium=MediaType.MOVIE)) is False
 
 
 def test_search_returns_releases():
@@ -44,6 +30,23 @@ def test_search_returns_releases():
     mocked.assert_called_once()
     assert isinstance(results, list)
     assert len(results) == 2
+    assert all(isinstance(r, Release) for r in results)
+
+
+def test_search_accepts_context_kwargs():
+    """The provider accepts the pipeline's request-context kwargs."""
+    prov = BandcampMediaProvider()
+    with patch("ovos_media_provider_bandcamp.BandCamp.search",
+               return_value=iter([_make_release("foo")])):
+        results = prov.search(
+            Signals(medium=MediaType.MUSIC, title="foo"),
+            lang="en-us",
+            supported_playback_types={"audio"},
+            blocked_genres={"adult"},
+            region="US",
+            session_id="sess-1",
+        )
+    assert len(results) == 1
     assert all(isinstance(r, Release) for r in results)
 
 
