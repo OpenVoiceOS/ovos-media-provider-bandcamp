@@ -1,11 +1,8 @@
 # ovos-media-provider-bandcamp
 
-OVOS **MediaProvider** plugin for [Bandcamp](https://bandcamp.com). Replaces the
-deprecated OCP search skill `ovos-skill-bandcamp`.
+This is an OVOS **MediaProvider** plugin for [Bandcamp](https://bandcamp.com). It replaces the deprecated OCP search skill `ovos-skill-bandcamp`.
 
-It wraps the [`py_bandcamp`](https://github.com/OpenJarbas/py_bandcamp) scraper
-client, which emits [`mediavocab.Release`](https://github.com/TigreGotico/mediavocab)
-objects directly, and exposes Bandcamp's public search to the OCP pipeline.
+The plugin wraps the [`py_bandcamp`](https://github.com/OpenJarbas/py_bandcamp) scraper client. `py_bandcamp` returns [`mediavocab.Release`](https://github.com/TigreGotico/mediavocab) objects directly. The plugin exposes Bandcamp's public search to the OCP pipeline.
 
 ## Routing
 
@@ -14,8 +11,7 @@ objects directly, and exposes Bandcamp's public search to the OCP pipeline.
 | `media` | `{MediaType.MUSIC}` |
 | `playback_type` | `{PlaybackType.AUDIO}` |
 
-The pipeline gates this provider out of non-music queries before paying for a
-network search.
+The pipeline uses this routing to filter out non-music queries before it runs a network search.
 
 ## Install
 
@@ -23,9 +19,7 @@ network search.
 pip install ovos-media-provider-bandcamp
 ```
 
-The plugin is registered under the `opm.media.provider` entry-point group as
-`bandcamp` and is loaded in-process by the OCP pipeline; there is nothing to
-configure.
+The plugin registers under the `opm.media.provider` entry-point group as `bandcamp`. The OCP pipeline loads it in-process. There is nothing to configure.
 
 ### Configuration
 
@@ -35,12 +29,23 @@ configure.
 
 ## How it works
 
-`BandcampMediaProvider.search(signals, lang)` builds a query from
-`signals.artist` + `signals.title`, calls `py_bandcamp.BandCamp.search(...)`
-(albums + tracks), and returns the resulting `mediavocab.Release` list. Artist
-and label hits are dropped — a MediaProvider returns playables, not identities.
-Ranking is carried per-result via `Release.match_confidence`; the OCP pipeline
-filters and ranks across providers.
+`BandcampMediaProvider.search(signals, lang)` builds a query from `signals.artist` and `signals.title`. It calls `py_bandcamp.BandCamp.search(...)` for albums and tracks, and returns the resulting list of `mediavocab.Release` objects.
+
+The provider drops artist and label hits. A MediaProvider returns playables, not identities. Each result carries its own rank in `Release.match_confidence`. The OCP pipeline filters and ranks results across all providers.
+
+## Related projects
+
+This plugin is one of several OCP MediaProvider plugins in the [OpenVoiceOS](https://github.com/OpenVoiceOS) org:
+
+- [ovos-media-provider-youtube](https://github.com/OpenVoiceOS/ovos-media-provider-youtube)
+- [ovos-media-provider-youtube-music](https://github.com/OpenVoiceOS/ovos-media-provider-youtube-music)
+- [ovos-media-provider-soundcloud](https://github.com/OpenVoiceOS/ovos-media-provider-soundcloud)
+- [ovos-media-provider-spotify](https://github.com/OpenVoiceOS/ovos-media-provider-spotify)
+- [ovos-media-provider-tunein](https://github.com/OpenVoiceOS/ovos-media-provider-tunein)
+- [ovos-media-provider-somafm](https://github.com/OpenVoiceOS/ovos-media-provider-somafm)
+- [ovos-media-provider-pyradios](https://github.com/OpenVoiceOS/ovos-media-provider-pyradios)
+- [ovos-media-provider-news](https://github.com/OpenVoiceOS/ovos-media-provider-news)
+- [ovos-media-provider-mass](https://github.com/OpenVoiceOS/ovos-media-provider-mass)
 
 ## License
 
