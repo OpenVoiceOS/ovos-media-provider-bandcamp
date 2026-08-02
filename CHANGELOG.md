@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.1a3](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/tree/0.0.1a3) (2026-08-02)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/compare/0.0.1a2...0.0.1a3)
+
+**Merged pull requests:**
+
+- chore: remove duplicate publish-alpha workflow [\#3](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/pull/3) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.0.1a2](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/tree/0.0.1a2) (2026-07-31)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/compare/4fe6666e791f39d4271d0a73011e51f9878d350c...0.0.1a2)
