@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.1a4](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/tree/0.0.1a4) (2026-08-13)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/compare/0.0.1a3...0.0.1a4)
+
 ## [0.0.1a3](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/tree/0.0.1a3) (2026-08-02)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-media-provider-bandcamp/compare/0.0.1a2...0.0.1a3)
